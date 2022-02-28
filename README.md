@@ -3,7 +3,7 @@
 <hr/>
 
 Aplicação Feita com:
-React - Next - Node e Node com algumas ferramentas como MySQL e JWT;
+React - Next - Node com algumas ferramentas como MySQL e JWT;
 
 Para rodar o projeto localmente é necessário alguns pré-requisitos de instalação:
 - MySQL Server
