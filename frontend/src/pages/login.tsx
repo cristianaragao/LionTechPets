@@ -49,7 +49,7 @@ const initialValues: FormValues = {
     password: ""
 }
 
-const validationSchema = yup.object({
+const validationSchema: yup.AnyObjectSchema = yup.object({
     email: yup.string().trim().email('Digite um email válido.').required('Email é obrigatório.'),
     password: yup.string().trim().required('Senha é obrigatória.')
 })
@@ -71,7 +71,6 @@ const Login: NextPage = () => {
                 backgroundImage: `url(${bg.src})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                // backgroundRepeat: "no-repeat",
             }}
         >
             <Grid

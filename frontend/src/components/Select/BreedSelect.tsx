@@ -1,41 +1,37 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
+
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
 
 import BreedService, { BreedType } from '../../services/BreedService';
 
-interface Props {
-  id: string;
-  value: BreedType;
-  error: string;
-  handleChange: () => void;
-  handleBlur: () => void;
+const useComponentWillMount = (cb: () => void) => {
+  const willMount = React.useRef(true)
+
+  if (willMount.current) cb()
+
+  willMount.current = false;
 }
 
-export default function Asynchronous(props: Props) {
+export default function Asynchronous(props: AutocompleteProps<any, any, any, any, any>): JSX.Element {
 
-  const {
-    id,
-    value,
-    error,
-    handleChange,
-    handleBlur
-  } = props;
+  const { id, renderInput, onChange, value } = props;
 
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<BreedType[]>([]);
-  const loading = open && options.length === 0;
+
+  const initialize = async () => {
+    const result = await BreedService.list();
+
+    setOptions([...result]);
+  }
+
+  useComponentWillMount(initialize);
 
   React.useEffect(() => {
     let active = true;
 
-    if (!loading) {
-      return undefined;
-    }
-
     (async () => {
-      
+
       const result = await BreedService.list();
 
       if (active) {
@@ -46,48 +42,25 @@ export default function Asynchronous(props: Props) {
     return () => {
       active = false;
     };
-  }, [loading]);
-
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+  }, []);
 
   return (
     <Autocomplete
       id={id}
-      sx={{ width: 300 }}
+      noOptionsText="Sem opções"
       open={open}
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
       onOpen={() => {
         setOpen(true);
       }}
       onClose={() => {
         setOpen(false);
       }}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
-      getOptionLabel={(option) => option.name}
+      isOptionEqualToValue={(option, value) => value.id == option.id}
+      getOptionLabel={(option: BreedType) => option?.name ? option.name : ""}
       options={options}
-      loading={loading}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Raças"
-          error={Boolean(error)}
-          helperText={error}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
-          }}
-        />
-      )}
+      renderInput={renderInput}
     />
-  );
+  )
 }

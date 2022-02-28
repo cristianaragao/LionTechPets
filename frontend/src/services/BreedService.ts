@@ -1,10 +1,10 @@
 import BaseService from ".";
 
 export type BreedType = {
-    id: string;
+    id?: string;
     name: string;
-    created_at: Date;
-    updated_at: Date;
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 class OwnerService extends BaseService<BreedType> {};

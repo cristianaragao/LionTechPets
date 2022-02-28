@@ -10,27 +10,85 @@ class BaseService<T> {
         this.route = route;
     }
 
-    async create(data: T): Promise<T> {
+    async create(data: T): Promise<boolean> {
 
-        const response = await api.post(this.route, data);
+        const response = await api.post(this.route, data)
+            .then(response =>
+                response.data
+            )
+            .catch(error => error);
 
-        return response.data;
+        if (response?.message) {
+
+            if (response.message.toLocaleLowerCase().includes("Network Error".toLocaleLowerCase())) openSnackBar({ message: "Servidor desligado", type: "error" });
+
+            else if (response.message.includes("Duplicate")) {
+                const string = response.message.split("'");
+                openSnackBar({ message: `"${string[1]}" já foi criado`, type: "warning" });
+            }
+
+            return false;
+        }
+        else {
+
+            openSnackBar({ message: "Criado com sucesso", type: "success" });
+
+            return true;
+        }
 
     }
 
-    async update(id: string, data: T): Promise<T> {
+    async update(id: string, data: T): Promise<boolean> {
 
-        const response = await api.put(`${this.route}/${id}`, data);
+        const response = await api.put(`${this.route}/${id}`, data)
+            .then(response =>
+                response.data
+            )
+            .catch(error => error);
 
-        return response.data;
+        if (response?.message) {
+
+            if (response.message.toLocaleLowerCase().includes("Network Error".toLocaleLowerCase())) openSnackBar({ message: "Servidor desligado", type: "error" });
+
+            else if (response.message.includes("Duplicate")) {
+                const string = response.message.split("'");
+                openSnackBar({ message: `"${string[1]}" já foi criado`, type: "warning" });
+            }
+
+            return false;
+        }
+        else {
+
+            openSnackBar({ message: "Atualizado com sucesso", type: "success" });
+
+            return true;
+        }
 
     }
 
-    async delete(id: string): Promise<T> {
+    async delete(id: string): Promise<boolean> {
 
-        const response = await api.put(`${this.route}/${id}`);
+        const response = await api.delete(`${this.route}/${id}`)
+            .then(response =>
+                response.data
+            )
+            .catch(error => error);
 
-        return response.data;
+            console.log("response: ", response)
+
+        if (response?.message) {
+
+            if (response.message.toLocaleLowerCase().includes("Network Error".toLocaleLowerCase())) openSnackBar({ message: "Servidor desligado", type: "error" });
+            if (response.message.toLocaleLowerCase().includes("foreign key".toLocaleLowerCase())) openSnackBar({ message: "Há um pet que possui este item como informação", type: "warning" });
+
+            return false;
+        }
+        else {
+
+            openSnackBar({ message: "Excluído com sucesso", type: "success" });
+
+            return true;
+        }
 
     }
 
@@ -43,7 +101,9 @@ class BaseService<T> {
             .catch(error => error);
 
         if (response instanceof Error) {
-            openSnackBar({ message: "Servidor desligado", type: "error" });
+
+            openSnackBar({ message: response.message, type: "error" });
+
             return [];
         }
 

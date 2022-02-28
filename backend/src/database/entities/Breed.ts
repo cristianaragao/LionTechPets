@@ -9,7 +9,7 @@ export default class Breed {
     @PrimaryColumn()
     id: string;
 
-    @Column()
+    @Column({ unique: true })
     name: string;
 
     @OneToMany(() => Pet, pet => pet.breed)

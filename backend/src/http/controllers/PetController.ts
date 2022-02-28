@@ -12,7 +12,7 @@ class PetController {
         } = request.body;
 
 
-        const service = new PetService();
+        const service = PetService;
 
         const result = await service.create({
             name,
@@ -22,7 +22,7 @@ class PetController {
         })
 
         if (result instanceof Error) {
-            return response.status(400).json(result.message);
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(201).json(result);
@@ -40,18 +40,20 @@ class PetController {
             ownerId
         } = request.body;
 
-        const service = new PetService();
+        const service = PetService;
 
-        const result = await service.update({
+        const result = await service.update(
             id,
-            name,
-            birthday,
-            breedId,
-            ownerId
-        })
+            {
+                name,
+                birthday,
+                breedId,
+                ownerId
+            }
+        )
 
         if (result instanceof Error) {
-            return response.status(400).json(result.message);
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(200).json(result);
@@ -60,7 +62,7 @@ class PetController {
 
     async list(request: Request, response: Response) {
 
-        const service = new PetService();
+        const service = PetService;
 
         const result = await service.list();
 
@@ -72,12 +74,12 @@ class PetController {
 
         const { id } = request.params;
 
-        const service = new PetService();
+        const service = PetService;
 
         const result = await service.delete(id);
 
         if (result instanceof Error) {
-            return response.status(400).json(result.message);
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(200).json(result);

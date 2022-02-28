@@ -3,21 +3,23 @@ import OwnerService from "../services/OwnerService";
 
 class OwnerController {
 
+    service = OwnerService;
+
     async create(request: Request, response: Response) {
-        const { 
+        const {
             name,
             phone
-         } = request.body;
+        } = request.body;
 
-        const service = new OwnerService();
-        
+        const service = OwnerService;
+
         const result = await service.create({
             name,
             phone
         })
 
-        if(result instanceof Error){
-            return response.status(400).json(result.message);
+        if (result instanceof Error) {
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(201).json(result);
@@ -28,30 +30,32 @@ class OwnerController {
 
         const { id } = request.params;
 
-        const { 
+        const {
             name,
             phone
-         } = request.body;
+        } = request.body;
 
-        const service = new OwnerService();
-        
-        const result = await service.update({
+        const service = OwnerService;
+
+        const result = await service.update(
             id,
-            name,
-            phone
-        })
+            {
+                name,
+                phone
+            }
+        );
 
-        if(result instanceof Error){
-            return response.status(400).json(result.message);
+        if (result instanceof Error) {
+            return response.status(200).json({ message: result.message });
         }
 
-        return response.status(200).json(result);
-
+        return response.status(201).json(result);
     }
 
-    async list (request: Request, response: Response) {
 
-        const service = new OwnerService();
+    async list(request: Request, response: Response) {
+
+        const service = OwnerService;
 
         const result = await service.list();
 
@@ -59,16 +63,28 @@ class OwnerController {
 
     }
 
-    async delete (request: Request, response: Response) {
+    async get(request: Request, response: Response) {
 
         const { id } = request.params;
 
-        const service = new OwnerService();
+        const service = OwnerService;
+
+        const result = await service.get(id);
+
+        return response.status(200).json(result);
+
+    }
+
+    async delete(request: Request, response: Response) {
+
+        const { id } = request.params;
+
+        const service = OwnerService;
 
         const result = await service.delete(id);
 
-        if(result instanceof Error){
-            return response.status(400).json(result.message);
+        if (result instanceof Error) {
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(200).json(result);

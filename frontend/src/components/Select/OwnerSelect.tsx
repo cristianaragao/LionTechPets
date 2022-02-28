@@ -1,24 +1,36 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
+import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete';
 
 import OwnerService, { OwnerType } from '../../services/OwnerService';
 
-export default function Asynchronous() {
+const useComponentWillMount = (cb: () => void) => {
+  const willMount = React.useRef(true)
+
+  if (willMount.current) cb()
+
+  willMount.current = false;
+}
+
+export default function Asynchronous(props: AutocompleteProps<any, any, any, any, any>): JSX.Element {
+
+  const { id, renderInput, onChange, value } = props;
+
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<OwnerType[]>([]);
-  const loading = open && options.length === 0;
+
+  const initialize = async () => {
+    const result = await OwnerService.list();
+
+    setOptions([...result]);
+  }
+
+  useComponentWillMount(initialize);
 
   React.useEffect(() => {
     let active = true;
 
-    if (!loading) {
-      return undefined;
-    }
-
     (async () => {
-      
+
       const result = await OwnerService.list();
 
       if (active) {
@@ -29,18 +41,15 @@ export default function Asynchronous() {
     return () => {
       active = false;
     };
-  }, [loading]);
-
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+  }, []);
 
   return (
     <Autocomplete
-      sx={{ width: 300 }}
+      id={id}
       open={open}
+      value={value}
+      noOptionsText="Sem opções"
+      onChange={onChange}
       onOpen={() => {
         setOpen(true);
       }}
@@ -48,24 +57,9 @@ export default function Asynchronous() {
         setOpen(false);
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
-      getOptionLabel={(option) => option.name}
+      getOptionLabel={(option: OwnerType) => option?.name ? option.name : ""}
       options={options}
-      loading={loading}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Donos"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
-          }}
-        />
-      )}
+      renderInput={renderInput}
     />
-  );
+  )
 }

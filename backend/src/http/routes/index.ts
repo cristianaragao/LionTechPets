@@ -34,6 +34,7 @@ routes
 routes
     .route("/owners/:id")
     .delete(OwnerController.delete)
+    .get(OwnerController.get)
     .put(OwnerController.update);
 
 

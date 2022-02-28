@@ -1,21 +1,24 @@
 import { Request, Response } from "express";
+
 import BreedService from "../services/BreedService";
 
 class BreedController {
 
-    async create(request: Request, response: Response) {
-        const { 
-            name
-         } = request.body;
+    service = BreedService;
 
-        const service = new BreedService();
-        
+    async create(request: Request, response: Response) {
+        const {
+            name
+        } = request.body;
+
+        const service = BreedService;
+
         const result = await service.create({
             name
         })
 
-        if(result instanceof Error){
-            return response.status(400).json(result.message);
+        if (result instanceof Error) {
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(201).json(result);
@@ -26,28 +29,30 @@ class BreedController {
 
         const { id } = request.params;
 
-        const { 
+        const {
             name
-         } = request.body;
+        } = request.body;
 
-        const service = new BreedService();
-        
-        const result = await service.update({
+        const service = BreedService;
+
+        const result = await service.update(
             id,
-            name
-        })
+            {
+                name
+            }
+        )
 
-        if(result instanceof Error){
-            return response.status(400).json(result.message);
+        if (result instanceof Error) {
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(200).json(result);
 
     }
 
-    async list (request: Request, response: Response) {
+    async list(request: Request, response: Response) {
 
-        const service = new BreedService();
+        const service = BreedService;
 
         const result = await service.list();
 
@@ -55,16 +60,16 @@ class BreedController {
 
     }
 
-    async delete (request: Request, response: Response) {
+    async delete(request: Request, response: Response) {
 
         const { id } = request.params;
 
-        const service = new BreedService();
+        const service = BreedService;
 
         const result = await service.delete(id);
 
-        if(result instanceof Error){
-            return response.status(400).json(result.message);
+        if (result instanceof Error) {
+            return response.status(200).json({ message: result.message });
         }
 
         return response.status(200).json(result);

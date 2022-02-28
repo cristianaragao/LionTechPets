@@ -5,10 +5,10 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref,
+    props,
+    ref,
 ) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 type showMessageType = {
@@ -24,7 +24,7 @@ type Message = {
     type: "success" | "warning" | "error" | "info";
 }
 
-const duration: number = 2; //Seconds
+const duration: number = 3.5; //Seconds
 
 export const Notifier = () => {
 
@@ -38,27 +38,27 @@ export const Notifier = () => {
 
     useEffect(() => {
         showMessage = ({ message, type }: showMessageType) => {
-			setMessage({
+            setMessage({
                 open: true,
                 text: message,
                 type: type,
             });
-		};
+        };
     });
 
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
         setMessage({
             ...message,
             open: false
         });
 
-      };
+    };
 
-    return(
+    return (
         <Snackbar
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             autoHideDuration={duration * 1000}

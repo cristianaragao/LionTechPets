@@ -17,7 +17,8 @@ export class CreateBreeds1645813541836 implements MigrationInterface {
                     {
                         name: "name",
                         type: "varchar",
-                        isNullable: false
+                        isNullable: false,
+                        isUnique: true
                     },
                     {
                         name: "created_at",
