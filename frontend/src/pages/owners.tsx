@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { NextPage } from "next";
+import { NextPage, GetServerSideProps } from "next";
+
+import { parseCookies } from "nookies";
 
 import InputMask from "react-input-mask";
 
@@ -59,7 +61,7 @@ const headers = [
 
 const messageRequired: string = "Campo obrigatório.";
 
-const Owners: NextPage = () => {
+const Owners: NextPage = ({ }) => {
     const [list, setList] = useState<any[]>([]);
     const [search, setSearch] = useState<string>("");
     const [item, setItem] = useState<OwnerType | null>(null);
@@ -289,5 +291,26 @@ const Owners: NextPage = () => {
 
     return <ListDefault {...configList} />;
 };
+
+export const serverSideRenderProps: GetServerSideProps = async (ctx) => {
+
+    const { "pets.token": token } = parseCookies();
+
+    if (!token) {
+        return {
+            redirect: {
+                destination: "/login",
+                permanent: false
+            }
+        }
+    }
+
+    console.log(ctx.req);
+
+    return {
+        props: {}
+    }
+
+}
 
 export default Owners;

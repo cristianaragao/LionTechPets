@@ -1,11 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -21,13 +20,10 @@ import { useRouter } from 'next/router'
 
 import routes, { Route } from "../routes";
 
-const drawerWidth = 220;
+import { AuthContext } from './contexts/AuthContext';
 
+const drawerWidth = 220;
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
   children: ReactElement<any, any>;
   title: string;
@@ -35,6 +31,8 @@ interface Props {
 
 export default function ResponsiveDrawer(props: Props) {
   const { window, children, title } = props;
+
+  const { logout, username } = useContext(AuthContext);
 
   const routersNext = useRouter()
 
@@ -50,8 +48,8 @@ export default function ResponsiveDrawer(props: Props) {
 
   const sort = (a: Route, b: Route) => {
 
-    if(a.name < b.name) return -1;
-    if(a.name < b.name) return 1;
+    if (a.name < b.name) return -1;
+    if (a.name < b.name) return 1;
 
     return 1;
 
@@ -96,7 +94,7 @@ export default function ResponsiveDrawer(props: Props) {
       <List>
         <ListItem
           button
-          onClick={() => redirect("/login")}
+          onClick={() => logout()}
         >
           <ListItemIcon>
             <LogoutIcon sx={{ fontSize: 27, color: "white" }} />

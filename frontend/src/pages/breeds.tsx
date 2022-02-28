@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { NextPage } from 'next'
+import { NextPage, GetServerSideProps } from 'next';
+
+import { parseCookies } from "nookies";
 
 import ListDefault from "../components/ListDefault";
 

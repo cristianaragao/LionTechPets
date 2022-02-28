@@ -7,6 +7,8 @@ import "../components/styles/globals.css";
 
 import favicon from "../../public/favicon.ico";
 
+import { AuthProvider } from "../components/contexts/AuthContext";
+
 import { Notifier } from "../components/SnackBar";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -18,9 +20,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="shortcut icon" href={favicon.src} />
         <title>Create</title>
       </Head>
-
-      <Component {...pageProps} />
-      <Notifier />
+      <AuthProvider>
+        <>
+          <Component {...pageProps} />
+          <Notifier />
+        </>
+      </AuthProvider>
 
 
     </>

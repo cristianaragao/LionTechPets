@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { NextPage } from "next";
+import { NextPage, GetServerSideProps } from "next";
+
+import { parseCookies } from "nookies";
 
 import moment from "moment";
 
@@ -372,3 +374,24 @@ const Pets: NextPage = () => {
 };
 
 export default Pets;
+
+export const serverSideRenderProps: GetServerSideProps = async (ctx) => {
+
+    const { "pets.token": token } = parseCookies();
+
+    if (!token) {
+        return {
+            redirect: {
+                destination: "/login",
+                permanent: false
+            }
+        }
+    }
+
+    console.log(ctx.req);
+
+    return {
+        props: {}
+    }
+
+}

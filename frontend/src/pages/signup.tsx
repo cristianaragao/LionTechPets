@@ -28,23 +28,25 @@ import { ButtonProps } from '@mui/material/Button';
 import { Formik, FormikProps } from "formik";
 import * as yup from 'yup';
 
+import SessionService from "../services/SessionService";
+
 const ColorButton = styled(LoadingButton)<ButtonProps>(({ theme }) => ({
-    color: "#000",
-    backgroundColor: "#CAFF42",
+    color: "#fff",
+    backgroundColor: "#59B09E",
     '&:hover': {
         boxShadow: "1px solid black",
-        backgroundColor: "#CAFF01",
+        backgroundColor: "#59B09E",
     },
 }));
 
 interface FormValues {
-    email: string;
+    username: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
 }
 
 const initialValues: FormValues = {
-    email: "",
+    username: "",
     password: "",
     confirmPassword: "",
 }
@@ -52,7 +54,7 @@ const initialValues: FormValues = {
 const messageRequired: string = "Campo obrigatório.";
 
 const validationSchema = yup.object({
-    email: yup.string().trim().email('Digite um email válido.').required(messageRequired),
+    username: yup.string().trim().required(messageRequired),
     password: yup.string().trim().required(messageRequired),
     confirmPassword: yup.string().oneOf([yup.ref('password')], 'Senhas estão diferentes.').required(messageRequired)
 })
@@ -107,11 +109,15 @@ const Login: NextPage = () => {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={(values: FormValues, helpers) => {
+                        onSubmit={async (values: FormValues, helpers) => {
 
                             const { setSubmitting } = helpers;
 
-                            // setSubmitting(false);
+                            const service = SessionService;
+
+                            await service.signup(values);
+
+                            setSubmitting(false);
 
                             return;
                         }}
@@ -127,16 +133,16 @@ const Login: NextPage = () => {
                         }: FormikProps<FormValues>) => (
                             <form autoComplete="off" onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", minWidth: "15rem" }}>
 
-                                <FormControl error={Boolean(errors.email) && touched.email} sx={{ m: 1, width: '25ch' }} variant="standard">
-                                    <InputLabel htmlFor="email">Email</InputLabel>
+                                <FormControl error={Boolean(errors.username) && touched.username} sx={{ m: 1, width: '25ch' }} variant="standard">
+                                    <InputLabel htmlFor="username">Nome de usuário</InputLabel>
                                     <Input
-                                        id="email"
+                                        id="username"
                                         type="text"
-                                        value={values.email}
+                                        value={values.username}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                    {Boolean(errors.email) && touched.email && <FormHelperText id="email-error">{errors.email}</FormHelperText>}
+                                    {Boolean(errors.username) && touched.username && <FormHelperText id="username-error">{errors.username}</FormHelperText>}
                                 </FormControl>
 
                                 <FormControl error={Boolean(errors.password) && touched.password} sx={{ m: 1, width: '25ch' }} variant="standard">

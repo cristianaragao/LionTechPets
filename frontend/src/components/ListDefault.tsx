@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import {
     Grid,
@@ -21,6 +21,8 @@ import Base from "../components/Base";
 import Table from "../components/Table";
 
 import Modal from "../components/Modal";
+
+import { AuthContext } from "../components/contexts/AuthContext";
 
 const ColorButton = styled(LoadingButton)<ButtonProps>(({ theme }) => ({
     color: "#fff",
@@ -59,6 +61,8 @@ type TableProps = {
 };
 
 const ListDefault: React.FC<ListProps> = (props) => {
+
+    const { username } = useContext(AuthContext);
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -104,7 +108,7 @@ const ListDefault: React.FC<ListProps> = (props) => {
                                 minWidth: "15rem",
                             }}>
 
-                            <Grid xs={12} sm={12} marginTop="0rem">
+                            <Grid item xs={12} sm={12} marginTop="0rem">
                                 <Typography variant="subtitle1" fontWeight="bold">Quer mesmo excluir {item.name} ?</Typography>
 
 
@@ -136,8 +140,9 @@ const ListDefault: React.FC<ListProps> = (props) => {
                         </Grid>
                     </Modal>}
 
-                <Grid item xs={12}>
+                <Grid item xs={12} style={{ display: 'flex', justifyContent: "space-between", alignItems: "baseline" }}>
                     <Typography variant="h6">{title}</Typography>
+                    <Typography fontWeight="bold" color="#254960">Logado como {username}</Typography>
                 </Grid>
 
                 <Grid

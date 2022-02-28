@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NextPage } from "next";
 
-import { useRouter } from 'next/router'
+import { AuthContext } from "../components/contexts/AuthContext";
+
+import Router from 'next/router'
 
 import Link from 'next/link'
 
@@ -31,32 +33,34 @@ import { Formik, FormikProps } from "formik";
 import * as yup from 'yup';
 
 const ColorButton = styled(LoadingButton)<ButtonProps>(({ theme }) => ({
-    color: "#000",
-    backgroundColor: "#CAFF42",
+    color: "#fff",
+    backgroundColor: "#59B09E",
     '&:hover': {
         boxShadow: "1px solid black",
-        backgroundColor: "#CAFF01",
+        backgroundColor: "#59B09E",
     },
 }));
 
 interface FormValues {
-    email: string;
+    username: string;
     password: string;
 }
 
 const initialValues: FormValues = {
-    email: "",
+    username: "",
     password: ""
 }
 
+const messageRequired: string = "Campo obrigatório.";
+
 const validationSchema: yup.AnyObjectSchema = yup.object({
-    email: yup.string().trim().email('Digite um email válido.').required('Email é obrigatório.'),
-    password: yup.string().trim().required('Senha é obrigatória.')
+    username: yup.string().trim().required(messageRequired),
+    password: yup.string().trim().required(messageRequired)
 })
 
 const Login: NextPage = () => {
 
-    const routersNext = useRouter();
+    const { login } = useContext(AuthContext)
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -108,7 +112,7 @@ const Login: NextPage = () => {
 
                             const { setSubmitting } = helpers;
 
-                            await routersNext.push("/pets");
+                            await login(values);
 
                             setSubmitting(false);
                             
@@ -127,16 +131,16 @@ const Login: NextPage = () => {
 
                             <form autoComplete="off" onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", minWidth: "15rem" }}>
 
-                                <FormControl error={Boolean(errors.email) && touched.email} sx={{ m: 1, width: '25ch' }} variant="standard">
-                                    <InputLabel htmlFor="email">Email</InputLabel>
+                                <FormControl error={Boolean(errors.username) && touched.username} sx={{ m: 1, width: '25ch' }} variant="standard">
+                                    <InputLabel htmlFor="username">Nome de usuário</InputLabel>
                                     <Input
-                                        id="email"
+                                        id="username"
                                         type="text"
-                                        value={values.email}
+                                        value={values.username}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                    {Boolean(errors.email) && touched.email && <FormHelperText id="email-error">{errors.email}</FormHelperText>}
+                                    {Boolean(errors.username) && touched.username && <FormHelperText id="username-error">{errors.username}</FormHelperText>}
                                 </FormControl>
 
                                 <FormControl error={Boolean(errors.password) && touched.password} sx={{ m: 1, width: '25ch' }} variant="standard">
@@ -160,7 +164,7 @@ const Login: NextPage = () => {
                                     {Boolean(errors.password) && touched.password && <FormHelperText id="password-error">{errors.password}</FormHelperText>}
                                 </FormControl>
 
-                                <Link href="/signup">
+                                <Link href="/signup" passHref>
                                     <Typography variant="caption" margin="0.5rem auto" color="#49708A" style={{ cursor: 'pointer' }}>Ainda não tem uma conta? Crie uma!</Typography>
                                 </Link>
 

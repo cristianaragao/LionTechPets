@@ -44,22 +44,6 @@ export default class BaseService<T> {
 
     }
 
-    async get(id: string): Promise<T | Error> {
-
-        const repo = getRepository(this.entity);
-
-        const item = await repo.findOne({ id })
-            .then((result: T) => result)
-            .catch((error: Error) => error);
-        
-        if (item instanceof Error) return new Error(item.message);
-
-        if (!item) return new Error(`Item não existe em "${this.entity}".`);
-
-        return item;
-
-    }
-
     async list(): Promise<T[] | Error> {
 
         const repo = getRepository(this.entity);

@@ -1,7 +1,6 @@
 import api from "./api";
 
 import openSnackBar from "../components/SnackBar";
-
 class BaseService<T> {
 
     route = "";
@@ -12,7 +11,7 @@ class BaseService<T> {
 
     async create(data: T): Promise<boolean> {
 
-        const response = await api.post(this.route, data)
+        const response = await api().post(this.route, data)
             .then(response =>
                 response.data
             )
@@ -40,7 +39,7 @@ class BaseService<T> {
 
     async update(id: string, data: T): Promise<boolean> {
 
-        const response = await api.put(`${this.route}/${id}`, data)
+        const response = await api().put(`${this.route}/${id}`, data)
             .then(response =>
                 response.data
             )
@@ -68,13 +67,13 @@ class BaseService<T> {
 
     async delete(id: string): Promise<boolean> {
 
-        const response = await api.delete(`${this.route}/${id}`)
+        const response = await api().delete(`${this.route}/${id}`)
             .then(response =>
                 response.data
             )
             .catch(error => error);
 
-            console.log("response: ", response)
+        console.log("response: ", response)
 
         if (response?.message) {
 
@@ -94,7 +93,7 @@ class BaseService<T> {
 
     async list(): Promise<any> {
 
-        const response = await api.get(this.route)
+        const response = await api().get(this.route)
             .then(response =>
                 response.data
             )
@@ -102,7 +101,7 @@ class BaseService<T> {
 
         if (response instanceof Error) {
 
-            openSnackBar({ message: response.message, type: "error" });
+            if (response.message.toLocaleLowerCase().includes("401".toLocaleLowerCase())) openSnackBar({ message: "Usuário não autenticado! Faça login.", type: "error" });
 
             return [];
         }

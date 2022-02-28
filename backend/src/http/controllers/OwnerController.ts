@@ -63,18 +63,6 @@ class OwnerController {
 
     }
 
-    async get(request: Request, response: Response) {
-
-        const { id } = request.params;
-
-        const service = OwnerService;
-
-        const result = await service.get(id);
-
-        return response.status(200).json(result);
-
-    }
-
     async delete(request: Request, response: Response) {
 
         const { id } = request.params;

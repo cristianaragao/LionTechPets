@@ -1,10 +1,29 @@
-import axios, { Axios } from "axios";
+import axios, { AxiosInstance } from "axios";
+import { parseCookies } from "nookies";
 
-const api: Axios = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_IP}:${process.env.NEXT_PUBLIC_PORT}`,
-  headers: {
-    "Content-type": "application/json"
+import Route from "next/router";
+
+function API() {
+
+  const loadToken = () => {
+    const { "pets.token": token } = parseCookies();
+    if (!token) {
+      Route.push("/login");
+      return "";
+    }
+    return token;
   }
-});
 
-export default api;
+  const api = axios.create({
+    baseURL: `${process.env.NEXT_PUBLIC_IP}:${process.env.NEXT_PUBLIC_PORT}`,
+    headers: {
+      "Content-type": "application/json",
+      "x-access-token": loadToken()
+    }
+  });
+
+  return api;
+
+};
+
+export default API;
