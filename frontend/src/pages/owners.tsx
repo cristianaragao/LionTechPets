@@ -305,8 +305,6 @@ export const serverSideRenderProps: GetServerSideProps = async (ctx) => {
         }
     }
 
-    console.log(ctx.req);
-
     return {
         props: {}
     }

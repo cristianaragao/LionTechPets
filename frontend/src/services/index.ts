@@ -73,8 +73,6 @@ class BaseService<T> {
             )
             .catch(error => error);
 
-        console.log("response: ", response)
-
         if (response?.message) {
 
             if (response.message.toLocaleLowerCase().includes("Network Error".toLocaleLowerCase())) openSnackBar({ message: "Servidor desligado", type: "error" });

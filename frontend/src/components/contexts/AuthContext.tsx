@@ -4,6 +4,8 @@ import { setCookie, parseCookies, destroyCookie } from "nookies";
 
 import SessionService from "../../services/SessionService";
 
+import openSnackBar from "../../components/SnackBar";
+
 import Route from "next/router";
 
 type AuthType = {
@@ -59,8 +61,6 @@ export function AuthProvider({ children }: { children: React.ReactElement<any, a
             username
         } = await service.login(data).then((re) => re);
 
-        console.log("token: ", token);
-
         if (!token) return;
 
         setUsername(username);
@@ -76,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactElement<any, a
         await Route.push("/login");
         setUsername(null);
         destroyCookie(undefined, "pets.token");
+        openSnackBar({ message: "Deslogado", type: "success" });
     }
 
 
