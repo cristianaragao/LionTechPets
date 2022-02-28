@@ -24,6 +24,8 @@ No back segue alguns detalhes de comando:
 
 O comando de população irá criar um login padrão `"usuario = admin / senha = admin"`, porém, você pode criar outros.
 
+Nota: o workspace da API está na pasta do backend.
+
 <hr/>
 
 # Thanks for visiting! :smile:
