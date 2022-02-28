@@ -3,7 +3,7 @@
 <hr/>
 
 Aplicação Feita com:
-React - Next - MySQL e Node com algumas pitadas de MySQL, JWT e MySQL;
+React - Next - Node e Node com algumas ferramentas como MySQL e JWT;
 
 Para rodar o projeto localmente é necessário alguns pré-requisitos de instalação:
 - MySQL Server
@@ -16,13 +16,13 @@ defina elas de acordo com a sua configuração. No backend tem outro arquivo "ex
 
 **COMANDOS**:
 
-Em cada pasta rode `"yarn"` ou `"npm install"` para instalar todas as dependencias
-no front rode `"yarn build"` e `"yarn start"` para rodar o projeto do front
-no back segue alguns detalhes de comando:
+Em cada pasta rode `"yarn"` ou `"npm install"` para instalar todas as dependencias.
+No front rode `"yarn build"` e `"yarn start"` para rodar o projeto do front.
+No back segue alguns detalhes de comando:
 - `"yarn typeorm migration:run"` para criar o banco de dados 
 - `"yarn populate"` este comando irá criar alguns dados fictícios de todas as tabelas. depois apenas rode `"yarn start"`
 
-o comando de população irá criar um login padrão `"usuario = admin / senha = admin"`, porém, você pode criar outros.
+O comando de população irá criar um login padrão `"usuario = admin / senha = admin"`, porém, você pode criar outros.
 
 <hr/>
 
