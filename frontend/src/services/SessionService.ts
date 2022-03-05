@@ -47,7 +47,7 @@ class SessionService {
         }
     }
 
-    async signup(data: SessionType): Promise<SessionData> {
+    async signup(data: SessionType): Promise<boolean> {
 
         const response = await api().post("/signup", data)
             .then(response =>
@@ -62,16 +62,13 @@ class SessionService {
 
             else openSnackBar({ message: "Este usuário já existe", type: "error" });
 
-            return {
-                token: null,
-                username: null
-            };
+            return false;
         }
         else {
 
             openSnackBar({ message: "Usuário criado com sucesso", type: "success" });
 
-            return response;
+            return true;
         }
     }
 

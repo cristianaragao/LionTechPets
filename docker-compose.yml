@@ -1,0 +1,52 @@
+version: "3"  
+
+services:
+
+  mysql: 
+    container_name: mysql
+    image: mysql:8.0.28
+    command: --authentication_policy=mysql_native_password
+    restart: always
+    ports:
+      - 3308:3306
+    environment:
+      - MYSQL_DATABASE=bd_pets
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=America/Manaus
+    volumes:
+      - data:/var/lib/mysql
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+
+  fronted:
+    container_name: frontend
+    build: ./frontend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/app
+
+  backend:
+    container_name: backend
+    build: ./backend
+    depends_on:
+      - mysql
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend/app
+
+volumes:
+  data:

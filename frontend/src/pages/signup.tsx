@@ -115,11 +115,10 @@ const Login: NextPage = () => {
 
                             const service = SessionService;
 
-                            await service.signup(values);
+                            const submitted: boolean = await service.signup(values);
 
                             setSubmitting(false);
 
-                            return;
                         }}
                     >
                         {({
@@ -187,7 +186,7 @@ const Login: NextPage = () => {
                                     {Boolean(errors.confirmPassword) && touched.confirmPassword && <FormHelperText id="confirmPassword-error">{errors.confirmPassword}</FormHelperText>}
                                 </FormControl>
 
-                                <Link href="/login">
+                                <Link href="/login" passHref>
                                     <Typography variant="caption" margin="0.5rem auto" color="#49708A" style={{ cursor: 'pointer' }}>Já tem uma conta? Faça login!</Typography>
                                 </Link>
 

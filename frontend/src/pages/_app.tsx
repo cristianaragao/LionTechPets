@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { AppProps } from 'next/app';
-import Head from 'next/head';
+import { AppProps } from "next/app";
+import Head from "next/head";
 
 import "../components/styles/globals.css";
 
@@ -12,10 +12,8 @@ import { AuthProvider } from "../components/contexts/AuthContext";
 import { Notifier } from "../components/SnackBar";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-
   return (
     <>
-
       <Head>
         <link rel="shortcut icon" href={favicon.src} />
         <title>Create</title>
@@ -26,8 +24,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <Notifier />
         </>
       </AuthProvider>
-
-
     </>
-  )
-}   
+  );
+}

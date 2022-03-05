@@ -1,4 +1,4 @@
-import { createConnection, getRepository } from "typeorm";
+import { getRepository } from "typeorm";
 
 import PetEntity from "../entities/Pet";
 import BreedEntity from "../entities/Breed";
@@ -27,27 +27,10 @@ const populateGeneric = async (Create: any, label: any, dataArray: any) => {
 }
 
 const populate = async () => {
-
-    await populateGeneric(UserEntity, 'Users', UserData);
-    await populateGeneric(OwnerEntity, 'Owners', OwnerData);
-    await populateGeneric(BreedEntity, 'Breeds', BreedData);
-    await populateGeneric(PetEntity, 'Pets', PetData);
-
-
-    return true
+        await populateGeneric(UserEntity, 'Users', UserData);
+        await populateGeneric(BreedEntity, 'Breeds', BreedData);
+        await populateGeneric(OwnerEntity, 'Owners', OwnerData);
+        await populateGeneric(PetEntity, 'Pets', PetData);
 }
 
-(async () => {
-    try {
-        await createConnection()
-            .then(async () => {
-                console.log("Connected to the database")
-                var execute = await populate();
-                console.log('execute: ', execute)
-            })
-        }
-    catch (error) {
-        console.log(error)
-    }
-}
-)();
+export default populate;

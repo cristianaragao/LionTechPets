@@ -6,7 +6,7 @@ const Pets = [
     id: "11990238-b91d-449a-813e-05b7a0c32415",
     name: "Thor",
     birthday: new Date("2021-06-01"),
-    ownerId: "92b6fcff-b268-4f7e-a7c4-963a7b1727f9",
+    ownerId: "37c4b6a3-2f17-47e9-84ef-f81adc85869e",
     breedId: "bec3b41a-ce95-4d6a-9133-b3847375e200",
   },
   {

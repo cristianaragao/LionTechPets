@@ -1,5 +1,5 @@
-import * as React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import * as React from "react";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 export default class MyDocument extends Document {
   render() {
@@ -21,7 +21,6 @@ export default class MyDocument extends Document {
 }
 
 MyDocument.getInitialProps = async (ctx) => {
-
   const originalRenderPage = ctx.renderPage;
 
   ctx.renderPage = () =>
